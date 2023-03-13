@@ -1,0 +1,32 @@
+button{
+    width: 70px;
+    height: 40px;
+    font-size:6px;
+    font-style: Consolas;
+    color: #fff;
+    text-align:center;
+    border:none; 
+}
+
+button#staffOut, button#deliveryClear{
+    background-color: #dc3545;
+    border-radius: 8px;
+}
+
+button#staffOut:hover, button#deliveryClear:hover{
+    background-color: rgb(247, 44, 44);
+}
+
+button#staffIn, button#scheduleAdd{
+    background-color:#198754;
+    border-radius: 8px;
+}
+
+button#staffIn:hover, button#scheduleAdd:hover{
+    background-color:rgb(24, 194, 24);
+}
+
+h1,h4{
+    font-style:Calibri;
+    color:#212529;
+}
