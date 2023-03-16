@@ -2,9 +2,6 @@ button {
   width: 45px;
   height: 30px;
   font-family: Consolas;
-  color: #fff;
-  text-align: center;
-  border: none;
 }
 
 button#staffOut, button#deliveryClear {
@@ -42,7 +39,7 @@ th {
   font-family: Consolas;
   background-color: #0E8EA8;
   font-size: 12px;
-  padding: 10px;  
+  padding: 5px;
 }
 
 td {
