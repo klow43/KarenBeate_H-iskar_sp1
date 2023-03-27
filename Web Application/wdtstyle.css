@@ -1,3 +1,4 @@
+/*CSS used for specific colors, sizing, fonts and placing after clients request, Bootstrap unable to meet requirements*/
 button {
   width: 45px;
   height: 30px;
@@ -11,7 +12,7 @@ button#staffOut, button#deliveryClear {
 }
 
 button#staffOut:hover, button#deliveryClear:hover {
-  background-color: rgb(247, 44, 44);
+  background-color: rgb(250, 21, 21);
 }
 
 button#staffIn, button#scheduleAdd {
@@ -29,22 +30,61 @@ h6, h4 {
   color: #212529;
 }
 
-table {
+table{
   border-color: #212529;
   margin-left: auto;
   margin-right: auto;
 }
 
-th {
+th{
   font-family: Consolas;
+  color: #fff;
   background-color: #0E8EA8;
   font-size: 12px;
   padding: 5px;
 }
 
-td {
+td{
   font-family: Calibri;
   background-color: #83D1E1;
   color: #212529;
   padding:5px;
+}
+
+table tr:hover td{
+  background-color:#0E8EA8;
+}
+
+#staffTable .rowselected td, #deliveryTable .rowselected td{
+  background-color:#0E8EA8;
+}
+
+#time{
+  font-family:Calibri;
+  color: #212529;
+  font-size:20px;
+}
+
+.toast{
+  z-index: 5;
+  margin: auto;
+  font-family:Calibri;
+  text-align: center;
+}
+#staffAction,#staffClose, #deliveryAction, #deliveryClose, #staffDayOver, #staffOutTemp{
+  text-align: center;
+  font-size:10px;
+  size: 20px;
+  position:center;
+}
+
+#vehicleInput, #nameInput, #surnameInput, #telephoneInput, #deliveryInput, #returnInput{
+  background-color: #83D1E1;
+  border: none;
+  position: center;
+}
+
+input{
+  width: 130px;
+  height: 30px;
 }
