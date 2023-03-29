@@ -45,6 +45,7 @@ th{
 }
 
 td{
+  text-align:center;
   font-family: Calibri;
   background-color: #83D1E1;
   color: #212529;
@@ -55,7 +56,11 @@ table tr:hover td{
   background-color:#0E8EA8;
 }
 
-#staffTable .rowselected td, #deliveryTable .rowselected td{
+#staffTable .rowselected td{
+  background-color:#0E8EA8;
+}
+
+#deliveryTable .selected td{
   background-color:#0E8EA8;
 }
 

@@ -51,7 +51,7 @@ class DeliveryDriver extends Employee{
         this.deliveryAdress = obj.deliveryAdress;
         this.returnTime = obj.returnTime;
     }
-    //method to alert user if delivery is delay on route.
+    //method to alert user if delivery is delayed on route.
     deliveryDriverIsLate(){
         if(this.returnTime <= digitalClock()){
             let x = this.name;
@@ -100,7 +100,7 @@ const employee5 = staffUserGet();
 
 //staffTable rows and cells
 function staffTable(obj){
-    const tablebody = document.querySelector("#staffTable");
+    const tablebody = document.querySelector("#staffTable tbody");
     const row = tablebody.insertRow();
     row.insertCell(0).innerHTML = `<image src="${obj.picture}"></image>`;
     row.insertCell(1).innerHTML = obj.name;
@@ -119,54 +119,49 @@ staffTable(employee3);
 staffTable(employee4);
 staffTable(employee5);
 
-//table animtaion on click Staff Table
+//table animation on click Table
 $(document).ready(function(){
-    $("#staffTable tbody tr").click(function(){
+    $("#staffTable tr").click(function(){
       let row = $(this).hasClass("rowselected");
        $("#staffTable tr").removeClass("rowselected")
       if(!row)
       $(this).addClass("rowselected");
     }) 
-  })
+})
 
+//option for user, Staff end day or break.
 function outOrEnd(){
    $("#staffOutToast").toast("show"); 
 }
-  //staff goin out for "break" from workday, displaying break
+
+//staff goin out for "break" from workday, displaying break specs.
 function staffOut(){
     $("#staffOutToast").toast("hide");
     const date = new Date();
-    const hours = date.getHours();
+    let hours = date.getHours();
     const minutes = date.getMinutes();
     let time = "";
     let away = prompt("Enter estimated away time in minutes:","enter minutes")
     $("#staffTable .rowselected td").eq(4).html("Break");
-    $("#staffTable .rowselected td").eq(5).html(hours + ":" + minutes); 
+    $("#staffTable .rowselected td").eq(5).html(hours + ":" + minutes);
     if(away < 60){
-        $("#staffTable .rowselected td").eq(6).html(away);
-        let newminutes = away + minutes;
-        $("#staffTable .rowselected td").eq(7).html(hours + ":" + newminutes);
-        time = hours + ":" + newminutes;
-        return time;      
+    $("#staffTable .rowselected td").eq(6).html(away)    
+    } 
+    let x = +away + +minutes;
+    if(x >= 60){
+    while (x > 60){
+        x -= 60;
+        hours += 1;
+    }
+    if(x < 10){
+        $("#staffTable .rowselected td").eq(7).html(hours + ":0" + x);
+    }
+    if(x > 10)
+    $("#staffTable .rowselected td").eq(7).html(hours + ":" + x);
     }
     else{
-        let awaytime = Math.floor(away / 60);
-        let newhours = hours + awaytime;
-        let newminutes = away - (awaytime * 60);
-        let newminutes2 = newminutes + minutes;
-        $("#staffTable .rowselected td").eq(6).html(awaytime + "hr " + newminutes + "min");
-        if(newminutes2 > 60){
-           let correctedhours = newhours + 1;
-           let correctedminutes =  newminutes2 - 60;
-        $("#staffTable .rowselected td").eq(7).html(correctedhours + ":" + correctedminutes);
-        time = correctedhours + ":" + correctedminutes; 
-        return time;   
-        }
-        else{
-        $("#staffTable .rowselected td").eq(7).html(newhours + ":" + newminutes2); 
-        time = newhours + ":" + newminutes2;
-        return time;   
-        } 
+        $("#staffTable .rowselected td").eq(6).html(x);
+        $("#staffTable .rowselected td").eq(7).html(hours + ":" + x);  
     }
 }
 
@@ -193,6 +188,7 @@ function staffIn(){
     if(!selected)
     alert("No staff member selected");
 }
+
 //checking for only letter input.
 function lettersOnly(obj){
     let check = /^[A-Za-z]+$/;
@@ -222,14 +218,13 @@ function validateDelivery(){
     }
     else{
         let deliveryDriver = {vehicle,name,surname,telephone,deliveryAdress,returnTime}
-        console.log(deliveryDriver)
         addDelivery(deliveryDriver);
     }
 }
 
 //make input value into object, insert into Delivey Board
 function addDelivery(obj){
-    const tablebody = document.querySelector("#deliveryTable");
+    const tablebody = document.querySelector("#deliveryTable tbody");
     const row = tablebody.insertRow();
     let deliveryDriver = new DeliveryDriver(obj);
     if(deliveryDriver.vehicle == "Car"){
@@ -245,13 +240,24 @@ function addDelivery(obj){
     row.insertCell(5).innerHTML = obj.returnTime;
 }
 
-//table animtaion on click Delivery Table
-$(document).ready(function(){
-    $("#deliveryTable tbody tr").click(function(){
-      let row = $(this).hasClass("rowselected");
-       $("#deliveryTable tr").removeClass("rowselected")
+//animation for Delivery Board rows and select.
+$("#deliveryTable tbody").on("click","tr",function(){
+      let row = $(this).hasClass("selected");
+       $("#deliveryTable tr").removeClass("selected")
       if(!row)
-      $(this).addClass("rowselected");
+      $(this).addClass("selected");
     }) 
-  })
 
+//Toast for Delivery Board delete selcted row
+ function deliveryBoard(){
+    let selected = $("#deliveryTable .selected");
+    console.log(selected)
+    if(selected.length == 0){alert("No driver selected, please click driver to select.")}
+    else{$("#deliveryClearToast").toast("show");}  
+ }
+
+ function deliveryClear(){
+    $("#deliveryClearToast").toast("hide");
+    let selected = $("#deliveryTable .selected");
+    selected.remove();
+ }

@@ -17,7 +17,8 @@
     <h6 class="text-center mt-5" id="staffHeader">Staff</h6>
     <div>
     <table class="rounded rounded-3 overflow-hidden table-bordered w-75" id="staffTable">
-        <tr class="text-center" id="staffTableHeader">
+        <thead>
+         <tr class="text-center" id="staffTableHeader">
                 <th>Picture</th>
                 <th>Name</th>
                 <th>Surname</th>
@@ -26,7 +27,9 @@
                 <th>Out Time</th>
                 <th>Duration</th>
                 <th>Expected Return Time</th>
-        </tr>
+        </tr>   
+        </thead>
+        <tbody></tbody>
     </table>
 <button class="position-absolute rounded-3 mt-1 border-0 text-white text-center" id="staffOut" onclick="outOrEnd()">Out</button>
 <button class="position-absolute end-0 rounded-3 mt-1 border-0 text-white text-center" id="staffIn" onclick="staffIn()">In</button>    
@@ -52,7 +55,8 @@
 
 <h6 class="text-center mt-5" id="scheduleHeader">Schedule Delivery</h6>
     <table class="rounded rounded-3 overflow-hidden table-bordered w-75">
-        <tr class="text-center">
+        <thead>
+          <tr class="text-center">
             <th>Vehicle</th>
             <th>Name</th>
             <th>Surname</th>
@@ -75,23 +79,27 @@
             <td><input id="deliveryInput"></td>
             <td><input id="returnInput"></td>
            </form>  
-        </tr>
+        </tr>  
+        </thead> 
     </table>
     <button onclick="validateDelivery()" class="position-absolute end-0 rounded-3 mt-1 border-0 text-white text-center" id="scheduleAdd">Add</button>      
    
 <h6 class="text-center mt-5" id="deliveryHeader">Delivery Board</h6>
 <div>
 <table class="rounded rounded-3 overflow-hidden table-bordered w-75 border-1" id="deliveryTable">
-    <tr class="text-center">
+    <thead>
+     <tr class="text-center">
             <th>Vehicle</th>
             <th>Name</th>
             <th>Surname</th>
             <th>Telephone</th>
             <th>Delivery Adress</th>
             <th>Return time</th>
-    </tr>
+    </tr>   
+    </thead>
+    <tbody></tbody>
 </table>
-<button class="position-absolute rounded-3 mt-1 border-0 text-white text-center" id="deliveryClear">Clear</button>
+<button onclick="deliveryBoard()" class="position-absolute rounded-3 mt-1 border-0 text-white text-center" id="deliveryClear">Clear</button>
 </div>
 <div class="toast w-50" id="deliveryToast" role="alert" aria-live="assertive" aria-atomic="true" >
     <div class="toast-body" id="deliveryToastmessage">
@@ -102,9 +110,16 @@
     </div>
 </div>
 <div class="position-absolute position-absolute bottom-0 end-0" id="time"></div>
+</div>
+<div class="toast w-50" id="deliveryClearToast" role="alert" aria-live="assertive" aria-atomic="true" >
+    <div class="toast-body" id="deliveryClearToastmessage">
+      <div class="mt-2 pt-2 border-top text-center">Would you like to remove delivery driver from table?<br>
+        <button onclick="deliveryClear()" type="button" id="deliveryClear" class="btn btn-primary w-25" >Remove</button>
+        <button type="button" id="deliveryClose" class="btn btn-secondary w-25" data-bs-dismiss="toast">Close</button>
+      </div>
+    </div>
+</div>
+<div class="position-absolute position-absolute bottom-0 end-0" id="time"></div>
 <script src="wdt_app.js"></script>
 </body>
-<script>
-    
-</script>
 </html>
