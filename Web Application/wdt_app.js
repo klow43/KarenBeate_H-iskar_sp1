@@ -10,7 +10,7 @@ function digitalClock(){
     }
 setInterval(digitalClock,1000);
 
-//parent class for Employees
+//parent class Employees
 class Employee{
     constructor(obj){
         this.name = obj.name;
@@ -143,6 +143,9 @@ function staffOut(){
     let time = "";
     let away = prompt("Enter estimated away time in minutes:","enter minutes")
     $("#staffTable .rowselected td").eq(4).html("Break");
+    if(minutes < 10){
+        $("#staffTable .rowselected td").eq(5).html(hours + ":0" + minutes);
+    }
     $("#staffTable .rowselected td").eq(5).html(hours + ":" + minutes);
     if(away < 60){
     $("#staffTable .rowselected td").eq(6).html(away)    
@@ -251,13 +254,15 @@ $("#deliveryTable tbody").on("click","tr",function(){
 //Toast for Delivery Board delete selcted row
  function deliveryBoard(){
     let selected = $("#deliveryTable .selected");
-    console.log(selected)
     if(selected.length == 0){alert("No driver selected, please click driver to select.")}
     else{$("#deliveryClearToast").toast("show");}  
  }
 
+//removes the row selected by user
  function deliveryClear(){
     $("#deliveryClearToast").toast("hide");
     let selected = $("#deliveryTable .selected");
     selected.remove();
  }
+
+ 

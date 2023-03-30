@@ -25,9 +25,13 @@ button#staffIn:hover, button#scheduleAdd:hover {
   background-color: rgb(24, 194, 24);
 }
 
-h6, h4 {
+h6, h4, #header {
   font-family: Calibri;
   color: #212529;
+}
+
+h6, #header{
+  padding-top: 30px;
 }
 
 table{
@@ -93,3 +97,24 @@ input{
   width: 130px;
   height: 30px;
 }
+
+#navbarDashboard, #navbarInventory, #navbarOrders{
+  background-color: #0E8EA8;
+  color: #fff;
+  font-family: Consolas; 
+}
+
+#navbarDashboard:hover, #navbarInventory:hover, #navbarOrders:hover{
+  background-color:#83D1E1;
+}
+
+#navdropdown1, #navdropdown2{
+    background-color: #83D1E1;
+    color: #212529;
+    font-family: Consolas;
+}
+
+li{
+  list-style-type: none;
+}
+
