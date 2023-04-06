@@ -6,7 +6,7 @@ function digitalClock(){
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
     document.getElementById("time").innerHTML =  today + "-" + month + "-"+ year + " " + " " + time;
-    return time;
+    return time.slice(0,5);
     }
 setInterval(digitalClock,1000);
 
@@ -18,7 +18,7 @@ class Employee{
     }
 }
 
-//Staff class inherits from Employee
+//StaffMember class inherits from Employee
 class StaffMember extends Employee{
     constructor(obj){
     super(obj);
@@ -31,18 +31,12 @@ class StaffMember extends Employee{
     }
     //method to alert user if staff member is delayed on office break.
     staffMemberIsLate(){
-        if(this.expectedReturn <= digitalClock()){
-            let x = this.name;
-            let y = this.surname;
-            document.addEventListener("DOMContentLoaded", function(){
-                $("#staffToastmessage").prepend(`Staff not returned at expected time : `, x + " " +y);  
-                 $("#staffToast").toast("show");   
-            })     
+                $("#staffToastmessage").prepend(`Staff not returned at expected time : ${this.name} + " " + ${this.surname}`);  
+                 $("#staffToast").toast("show");          
             }
-        }     
-    }
+}
 
-//Delivery driver class inherits from Employee
+//DeliveryDriver class inherits from Employee
 class DeliveryDriver extends Employee{
     constructor(obj){
         super(obj);
@@ -53,23 +47,14 @@ class DeliveryDriver extends Employee{
     }
     //method to alert user if delivery is delayed on route.
     deliveryDriverIsLate(){
-        if(this.returnTime <= digitalClock()){
-            let x = this.name;
-            let y = this.surname;
-            let z = this.telephone;
-            let æ = this.deliveryAdress;
-            let ø = this.returnTime;
-            document.addEventListener("DOMContentLoaded", function(){
-            $("#deliveryToastmessage").prepend(`Delivery driver overdue expected return : <br> ${x} ${y}. <br> Phone number: ${z}. <br> Delivery Adress: ${æ}. <br> Supposed return time: ${ø}`);
+            $("#deliveryToastmessage").prepend(`Delivery driver overdue expected return : <br> ${this.name} ${this.surname}. <br> Phone number: ${this.telephone}. <br> Delivery Adress: ${this.deliveryAdress}. <br> Supposed return time: ${this.returnTime}`);
              $("#deliveryToast").toast("show");
-            })
         }
-    }
 }
 
 //get API "staff member"
 function staffUserGet(){
-let result = {};
+let staff = {};
 $.ajax({
     url: 'https://randomuser.me/api/',
     dataType: 'json',
@@ -85,21 +70,22 @@ $.ajax({
             duration : null,
             expectedReturn : null
         }
-        result = new StaffMember(obj);
+        staff = new StaffMember(obj);
     }
   });
-return result;
+return staff;
 };
 
 //5 "staff members"
+const employee0 = staffUserGet();
 const employee1 = staffUserGet();
 const employee2 = staffUserGet();
 const employee3 = staffUserGet();
 const employee4 = staffUserGet();
-const employee5 = staffUserGet();
+const staff = [employee0,employee1,employee2,employee3,employee4];
 
 //staffTable rows and cells
-function staffTable(obj){
+function fillStaffTable(obj){
     const tablebody = document.querySelector("#staffTable tbody");
     const row = tablebody.insertRow();
     row.insertCell(0).innerHTML = `<image src="${obj.picture}"></image>`;
@@ -109,87 +95,90 @@ function staffTable(obj){
     row.insertCell(4).innerHTML = obj.status;
     row.insertCell(5).innerHTML = obj.outTime;
     row.insertCell(6).innerHTML = obj.duration;
-    row.insertCell(7).innerHTML = obj.expectedReturn;
+    row.insertCell(7).innerHTML = obj.expectedReturn;   
 };
 
 //load employees onto staffTable
-staffTable(employee1);
-staffTable(employee2);
-staffTable(employee3);
-staffTable(employee4);
-staffTable(employee5);
+fillStaffTable(employee0);
+fillStaffTable(employee1);
+fillStaffTable(employee2);
+fillStaffTable(employee3);
+fillStaffTable(employee4);
 
 //table animation on click Table
-$(document).ready(function(){
-    $("#staffTable tr").click(function(){
-      let row = $(this).hasClass("rowselected");
-       $("#staffTable tr").removeClass("rowselected")
-      if(!row)
+$("#staffTable tr").click(function(){
+      let rowSelected = $(this).hasClass("rowselected");
+       $("#staffTable tr").removeClass("rowselected");
+      if(!rowSelected)
       $(this).addClass("rowselected");
-    }) 
-})
+}); 
 
 //option for user, Staff end day or break.
 function outOrEnd(){
    $("#staffOutToast").toast("show"); 
 }
 
+const staffTable = $("#staffTable");
+
+function getSelectedObject(){
+    selected = $(".rowselected");
+    let row = $("tr").index(selected);
+    let obj = staff[row - 1];
+    return obj;
+}
 //staff goin out for "break" from workday, displaying break specs.
 function staffOut(){
     $("#staffOutToast").toast("hide");
+    obj = getSelectedObject();
     const date = new Date();
     let hours = date.getHours();
     const minutes = date.getMinutes();
-    let time = "";
     let away = prompt("Enter estimated away time in minutes:","enter minutes")
-    $("#staffTable .rowselected td").eq(4).html("Break");
+    obj.status = "Break";
     if(minutes < 10){
-        $("#staffTable .rowselected td").eq(5).html(hours + ":0" + minutes);
+        //adding leading 0 for estetics if x is under 10
+        obj.outTime = (hours + ":0" + minutes);
     }
-    $("#staffTable .rowselected td").eq(5).html(hours + ":" + minutes);
-    if(away < 60){
-    $("#staffTable .rowselected td").eq(6).html(away)    
-    } 
-    let x = +away + +minutes;
-    if(x >= 60){
-    while (x > 60){
-        x -= 60;
-        hours += 1;
-    }
-    if(x < 10){
-        $("#staffTable .rowselected td").eq(7).html(hours + ":0" + x);
-    }
-    if(x > 10)
-    $("#staffTable .rowselected td").eq(7).html(hours + ":" + x);
-    }
+    else{obj.outTime = (hours + ":" + minutes);}
+        if(away < 60){obj.outTime = (away + "min"); } 
     else{
-        $("#staffTable .rowselected td").eq(6).html(x);
-        $("#staffTable .rowselected td").eq(7).html(hours + ":" + x);  
+        let hour = Math.floor(away/60);
+        let minutes = (away-(hour*60));
+        obj.duration = (hour + "hr " + minutes + "min");
     }
+        let x = +away + minutes;
+        if(x >= 60){
+        while (x > 60){x -= 60;hours += 1;}
+        if(x < 10){ 
+            //adding leading 0 for estetics if x is under 10
+            obj.expectedReturn = (hours + ":0" + x);
+            }
+            else if(x >= 10){ obj.expectedReturn = (hours + ":" + x); }  
+        }
+        else{obj.expectedReturn = (hours + ":" + x);}
+        $("#staffTable").on("change",obj);
+    staffLate(obj);     
 }
 
-//staff goin home for the day, status out and clears time, duration, expected return.
+//staff going home for the day, status out and clears time, duration, expected return.
 function staffEnd(){
+    obj = getSelectedObject()
+    if(obj.keys.length == 0)alert("No staff member selected");
     $("#staffOutToast").toast("hide");
-    let selected = $("#staffTable .rowselected")
-    $("#staffTable .rowselected td").eq(4).html("Out");
-    $("#staffTable .rowselected td").eq(5).html(null);
-    $("#staffTable .rowselected td").eq(6).html(null);
-    $("#staffTable .rowselected td").eq(7).html(null);
-    if(!selected)
-    alert("No staff member selected");
+    obj.status = ("Out");
+    obj.outTime = (null);
+    obj.duration = (null);
+    obj.expectedReturn = (null);  
 }
 
 //changes status to in on relevant object, clears out time, duration, expected return.
 function staffIn(){
-    let selected = $("#staffTable .rowselected")
-    $("#staffTable .rowselected td").eq(4).html("In");
-    $("#staffTable .rowselected td").eq(5).html(null);
-    $("#staffTable .rowselected td").eq(6).html(null);
-    $("#staffTable .rowselected td").eq(7).html(null);
-    $("#staffTable .rowselected td").eq(8).html(null);
-    if(!selected)
-    alert("No staff member selected");
+    obj = getSelectedObject();
+    if(obj.keys.length == 0)alert("No staff member selected")
+    obj.status = ("In");
+    obj.outTime = (null);
+    obj.duration = (null);
+    obj.expectedReturn = (null);
 }
 
 //checking for only letter input.
@@ -210,7 +199,7 @@ function numbersAndLetters(obj){
 
 //validating correct input by user, if wrong, prompt.
 function validateDelivery(){
-    let vehicle = document.getElementById("vehicleInput").value;
+    const vehicle = document.getElementById("vehicleInput").value;
     const name = document.getElementById("nameInput").value;
     const surname = document.getElementById("surnameInput").value;
     const telephone = document.getElementById("telephoneInput").value;
@@ -241,6 +230,7 @@ function addDelivery(obj){
     row.insertCell(3).innerHTML = obj.telephone;
     row.insertCell(4).innerHTML = obj.deliveryAdress;
     row.insertCell(5).innerHTML = obj.returnTime;
+    driverLate(obj)
 }
 
 //animation for Delivery Board rows and select.
@@ -265,4 +255,17 @@ $("#deliveryTable tbody").on("click","tr",function(){
     selected.remove();
  }
 
+ function driverLate(obj){
+        if(obj.returnTime < digitalClock()){
+         obj.deliveryDriverIsLate();   
+        }     
+ }
+
+ function staffLate(obj){
+    if(obj.returnTime < digitalClock()){
+        obj.staffMemberIsLate();
+    }
+ }
  
+
+ //refresh table after object update, activate staffLate and driverLate and keep them checking if time is overdue.

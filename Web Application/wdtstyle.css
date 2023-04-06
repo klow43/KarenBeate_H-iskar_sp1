@@ -90,7 +90,6 @@ table tr:hover td{
 #vehicleInput, #nameInput, #surnameInput, #telephoneInput, #deliveryInput, #returnInput{
   background-color: #83D1E1;
   border: none;
-  position: center;
 }
 
 input{
