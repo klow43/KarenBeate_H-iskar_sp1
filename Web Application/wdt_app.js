@@ -31,7 +31,7 @@ class StaffMember extends Employee{
     }
     //method to alert user if staff member is delayed on office break.
     staffMemberIsLate(){
-           $("#staffToastmessage").prepend(`Staff not returned at expected time : ${this.name} ${this.surname}`);  
+           $("#staffToastmessage").prepend(`<image src="${this.picture}"> <br> </image> Staff not returned at expected time : ${this.name} ${this.surname}`);  
                 $("#staffToast").toast("show"); 
             }               
 }
@@ -229,10 +229,11 @@ function addDelivery(obj){
     const row = tablebody.insertRow();
     const deliveryDriver = new DeliveryDriver(obj);
     if(deliveryDriver.vehicle == "Car"){
-    row.insertCell(0).innerHTML = `<img src="car.png" alt="Car" width="50" height="50"></img>`;
+    row.insertCell(0).innerHTML = `<img src="Car.png" alt="Car" width="50" height="50"></img>`;
+    //Fiat 500 by Icons8
     }
     else{
-    row.insertCell(0).innerHTML = `<img src="motorcycle.jpg" alt="Motorcycle" width="50" height="50"></img>`;
+    row.insertCell(0).innerHTML = `<img src="Motorcycle.png" alt="Motorcycle" width="50" height="50"></img>`;
     }
     row.insertCell(1).innerHTML = obj.name;
     row.insertCell(2).innerHTML = obj.surname;
@@ -273,7 +274,7 @@ function clearToast(type){
              $("#deliveryLateToastmessage").text("");
              break;
         case "form":
-            $("#deliveryDriverForm").trigger("reset"); 
+            $("#deliveryDriverForm").trigger("reset");
            break;
     }
 }
