@@ -60,7 +60,6 @@
 
 <h6 class="text-center mt-5" id="scheduleHeader">Schedule Delivery</h6>
     <table class="rounded rounded-3 overflow-hidden table-bordered w-75">
-        <thead>
           <tr class="text-center">
             <th>Vehicle</th>
             <th>Name</th>
@@ -70,9 +69,9 @@
             <th>Return Time</th>
         </tr>
         <tr>
-           <form name="DeliveryDriver">
+           <form id="deliveryDriverForm">
             <td>
-                <select id="vehicleInput" class="form-select form-select-sm col-2" aria-label=".form-select-sm example">
+                <select id="vehicleInput" class="form-select form-select-sm col-4" aria-label=".form-select-sm example">
                     <option selected>Transport</option>
                     <option value="Motorcycle">Motorcycle</option>
                     <option value="Car">Car</option>
@@ -82,16 +81,15 @@
             <td><input id="surnameInput"></td>
             <td><input id="telephoneInput"></td>
             <td><input id="deliveryInput"></td>
-            <td><input id="returnInput"></td>
-           </form>  
+            <td><input type="time" id="returnInput"></td>
+           </form>
         </tr>  
-        </thead> 
     </table>
 <button onclick="validateDelivery()" class="position-absolute end-0 rounded-3 mt-1 border-0 text-white text-center" id="scheduleAdd">Add</button>      
    
 <h6 class="text-center mt-5" id="deliveryHeader">Delivery Board</h6>
 <div>
-<table class="rounded rounded-3 overflow-hidden table-bordered w-75 border-1" id="deliveryTable">
+<table class="rounded rounded-3 overflow-hidden table-bordered w-75" id="deliveryTable">
     <thead>
      <tr class="text-center">
             <th>Vehicle</th>
@@ -106,39 +104,34 @@
 </table>
 <button onclick="deliveryBoard()" class="position-absolute rounded-3 mt-1 border-0 text-white text-center" id="deliveryClear">Clear</button>
 </div>
-<div class="toast w-50" id="deliveryToast" role="alert" aria-live="assertive" aria-atomic="true" >
-    <div class="toast-body" id="deliveryToastmessage">
+<div class="toast translate-middle z-index-3" id="deliveryLateToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true">
+    <div class="toast-body" id="deliveryLateToastmessage"></div>
       <div class="mt-2 pt-2 border-top">
-        <button type="button" id="deliveryAction" class="btn btn-primary w-25">Take action</button>
-        <button type="button" id="deliveryClose" class="btn btn-secondary w-25" data-bs-dismiss="toast">Close</button>
-      </div>
+        <button type="button" id="deliveryAction" class="btn btn-primary w-25" onclick="clearToast('delivery')">Take action</button>
+        <button type="button" id="deliveryDismiss" class="btn btn-secondary w-25" data-bs-dismiss="toast" onclick="clearToast('delivery')">Close</button>
     </div>
 </div>
-<div class="position-absolute position-absolute bottom-0 end-0" id="time"></div>
+<div class="position-absolute bottom-0 end-0" id="time"></div>
 </div>
-<div class="toast w-50" id="deliveryClearToast" role="alert" aria-live="assertive" aria-atomic="true" >
-    <div class="toast-body" id="deliveryClearToastmessage">
-      <div class="mt-2 pt-2 border-top text-center">Would you like to remove delivery driver from table?<br>
-        <button onclick="deliveryClear()" type="button" id="deliveryClear" class="btn btn-primary w-25" >Remove</button>
+<div class="toast z-index-3" id="deliveryClearToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true" >
+    <div class="toast-body" id="deliveryClearToastmessage"></div>
+      <div class="mt-2 pt-2 border-top">Would you like to remove delivery driver from table?<br>
+        <button onclick="deliveryClear()" type="button" id="deliveryRemove" class="btn btn-primary w-25" >Remove</button>
         <button type="button" id="deliveryClose" class="btn btn-secondary w-25" data-bs-dismiss="toast">Close</button>
-      </div>
     </div>
 </div>
-<div class="position-absolute position-absolute bottom-0 end-0" id="time"></div>
-<div class="toast w-50" id="staffToast" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="toast-body" id="staffToastmessage">
+<div class="toast z-index-3" id="staffToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true">
+  <div class="toast-body" id="staffToastmessage"></div>
     <div class="mt-2 pt-2 border-top">
-      <button id="staffAction" type="button" class="btn btn-primary w-25">Take action</button>
-      <button id="staffClose" type="button" class="btn btn-secondary w-25" data-bs-dismiss="toast">Close</button>
-    </div>
+      <button id="staffAction" type="button" class="btn btn-primary w-25" onclick="takeActionStaff()">Take action</button>
+      <button id="staffClose" type="button" class="btn btn-secondary w-25" data-bs-dismiss="toast" onclick="clearToast('staff')">Close</button> 
   </div>
 </div>
-<div class="toast w-50" id="staffOutToast" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="toast-body" id="staffToastmessage">
+<div class="toast z-index-3'" id="staffOutToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true">
+  <div class="toast-body" id="staffToastmessage"></div>
     <div class="mt-2 pt-2 border-top">Staff done for the day or going out on break?<br>
       <button id="staffDayOver" type="button" class="btn btn-primary w-25" onclick="staffEnd()">End day</button>
-      <button id="staffOutTemp" type="button" class="btn btn-secondary w-25" onclick="staffOut()">Break</button>
-    </div>
+      <button id="staffOutBreak" type="button" class="btn btn-secondary w-25" onclick="staffOut()">Break</button> 
   </div>
 </div>
 <script src="wdt_app.js"></script>

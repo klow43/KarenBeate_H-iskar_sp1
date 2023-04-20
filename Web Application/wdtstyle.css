@@ -2,27 +2,39 @@
 button {
   width: 45px;
   height: 30px;
+  text-size-adjust: auto;
   font-family: Consolas;
 }
 
-button#staffOut, button#deliveryClear {
+button#staffOut, button#deliveryClear, button#deliveryRemove, button#staffAction, button#deliveryAction{
   font-size: 12px;
-  margin-left: 15%;
   background-color: #dc3545;
+}
+
+button#staffOut, button#deliveryClear{
+   margin-left: 15%;
 }
 
 button#staffOut:hover, button#deliveryClear:hover {
   background-color: rgb(250, 21, 21);
 }
 
-button#staffIn, button#scheduleAdd {
+button#staffIn, button#scheduleAdd, button#staffOutBreak {
   background-color: #198754;
   font-size: 12px;
+}
+
+button#staffIn, button#scheduleAdd{
   margin-right: 15%;
 }
 
 button#staffIn:hover, button#scheduleAdd:hover {
   background-color: rgb(24, 194, 24);
+}
+
+button#deliveryClose, button#staffClose, button#staffDayOver, button#deliveryDismiss{
+  background-color: #83D1E1;
+  font-size: 12px;
 }
 
 h6, h4, #header {
@@ -93,7 +105,7 @@ table tr:hover td{
 }
 
 input{
-  width: 130px;
+  width: 100px;
   height: 30px;
 }
 

@@ -31,15 +31,15 @@ class StaffMember extends Employee{
     }
     //method to alert user if staff member is delayed on office break.
     staffMemberIsLate(){
-           $("#staffToastmessage").prepend(`Staff not returned at expected time : ${this.name} + " " + ${this.surname}`);  
-                 $("#staffToast").toast("show"); 
-                    }               
-            }
+           $("#staffToastmessage").prepend(`Staff not returned at expected time : ${this.name} ${this.surname}`);  
+                $("#staffToast").toast("show"); 
+            }               
+}
 
 //DeliveryDriver class inherits from Employee
 class DeliveryDriver extends Employee{
     constructor(obj){
-        super(obj);
+    super(obj);
         this.vehicle = obj.vehicle;
         this.telephone = obj.telephone;
         this.deliveryAdress = obj.deliveryAdress;
@@ -47,8 +47,8 @@ class DeliveryDriver extends Employee{
     }
     //method to alert user if delivery is delayed on route.
     deliveryDriverIsLate(){
-            $("#deliveryToastmessage").prepend(`Delivery driver overdue expected return : <br> ${this.name} ${this.surname}. <br> Phone number: ${this.telephone}. <br> Delivery Adress: ${this.deliveryAdress}. <br> Supposed return time: ${this.returnTime}`);
-             $("#deliveryToast").toast("show");
+            $("#deliveryLateToastmessage").prepend(`Delivery driver overdue expected return : <br> ${this.name} ${this.surname}. <br> Phone number: ${this.telephone}. <br> Delivery Adress: ${this.deliveryAdress}. <br> Supposed return time: ${this.returnTime}`);
+                $("#deliveryLateToast").toast("show");
         }
 }
 
@@ -71,6 +71,9 @@ $.ajax({
             expectedReturn : null
         }
         staff = new StaffMember(obj);
+    },
+    error: function(){
+        alert("Staff unable to upload, apologies for the inconvenience, please retry later.")
     }
   });
 return staff;
@@ -118,6 +121,11 @@ function outOrEnd(){
    $("#staffOutToast").toast("show"); 
 }
 
+function takeActionStaff(){
+    $("#staffToast").toast("hide");
+    clearToast('staff');
+}
+
 //get selected object in array of staffmembers, matching the rownumber in tbody.
 function getSelectedObject(){
     let rowSelected = $(".rowselected");
@@ -136,14 +144,14 @@ function staffOut(){
     let away = prompt("Enter estimated away time in minutes:","enter minutes")
     obj.status = "Break";
     obj.outTime = (minutes < 10) ? (hours + ":0" + minutes) : (hours + ":" + minutes);
-    let hour = Math.floor(away/60);
-    let minute = (away-(hour*60));
+    let hour = Math.floor(+away/60);
+    let minute = (+away-(hour*60));
     obj.duration = (+away < 60) ?  (away + "min") : (hour + "hr " + minute + "min");
     let x = +away + minutes;
     if(x >= 60){
         while (x > 60){x -= 60;hours += 1;}
-        obj.expectedReturn = (x < 10) ? (hours + ":0" + x) : (hours + ":" + x);}       
-    else{obj.expectedReturn = (hours + ":" + x);}   
+        obj.expectedReturn = (x <= 10) ? (hours + ":0" + x) : (hours + ":" + x);}       
+    else{obj.expectedReturn = (hours + ":" + x);} 
         updateTable(obj);                   
 }
 
@@ -177,11 +185,14 @@ function updateTable(obj){
     cells[5].innerHTML = obj.outTime;
     cells[6].innerHTML = obj.duration;
     cells[7].innerHTML = obj.expectedReturn;
+    if(obj.expectedReturn != null){
+        obj.staffMemberIsLate();
+    }
 }
 
 //checking for only letter input.
 function lettersOnly(obj){
-    let check = /^[A-Za-z]+$/;
+    let check = /^[ÆØÅæøåA-Za-z ]+$/;
     return check.test(obj);
 }
 //checking for only number input.
@@ -191,24 +202,24 @@ function numbersOnly(obj){
 }
 //Checking for only numbers AND letters(delivery Adress)
 function numbersAndLetters(obj){
-    let check = /^[0-9a-zA-Z\s,-]+$/;
+    let check = /^[0-9ÆØÅæøåa-zA-Z\s,-]+$/;
     return check.test(obj);
 }
 
 //validating correct input by user, if wrong, prompt.
 function validateDelivery(){
-    const vehicle = document.getElementById("vehicleInput").value;
-    const name = document.getElementById("nameInput").value;
-    const surname = document.getElementById("surnameInput").value;
-    const telephone = document.getElementById("telephoneInput").value;
-    const deliveryAdress = document.getElementById("deliveryInput").value;
-    const returnTime = document.getElementById("returnInput").value;
-    if(vehicle == "Transport" || !lettersOnly(name) || !lettersOnly(surname) || !numbersOnly(telephone) || !numbersAndLetters(deliveryAdress) || !numbersOnly(returnTime)){
-        alert(`Invalid input, correct format for each option:\nVehicle: please choose transport from selection. \nName and surname: letters only. \nTelephone: numbers only. \nDelivery Adress: letters and number(no special characters). \nReturn Time: only numbers`);
+    const vehicle = $("#vehicleInput").find(":selected").val();
+    const name = $("#nameInput").val();
+    const surname = $("#surnameInput").val();
+    const telephone = $("#telephoneInput").val();
+    const deliveryAdress = $("#deliveryInput").val();
+    const returnTime = $("#returnInput").val();
+    if(vehicle == "Transport" || !lettersOnly(name) || !lettersOnly(surname) || !numbersOnly(telephone) || !numbersAndLetters(deliveryAdress) || returnTime == null){
+        alert(`Invalid input, correct format:\nVehicle: Select vehicle. \nName and surname: letters only. \nTelephone: numbers only. \nDelivery Adress: letters and numbers.`);
     }
     else{
-        let deliveryDriver = {vehicle,name,surname,telephone,deliveryAdress,returnTime}
-        addDelivery(deliveryDriver);
+        const deliveryDriver = {vehicle,name,surname,telephone,deliveryAdress,returnTime}
+        addDelivery(deliveryDriver);  
     }
 }
 
@@ -216,7 +227,7 @@ function validateDelivery(){
 function addDelivery(obj){
     const tablebody = document.querySelector("#deliveryTable tbody");
     const row = tablebody.insertRow();
-    let deliveryDriver = new DeliveryDriver(obj);
+    const deliveryDriver = new DeliveryDriver(obj);
     if(deliveryDriver.vehicle == "Car"){
     row.insertCell(0).innerHTML = `<img src="car.png" alt="Car" width="50" height="50"></img>`;
     }
@@ -228,6 +239,8 @@ function addDelivery(obj){
     row.insertCell(3).innerHTML = obj.telephone;
     row.insertCell(4).innerHTML = obj.deliveryAdress;
     row.insertCell(5).innerHTML = obj.returnTime;
+    clearToast("form");
+    //obj.deliveryDriverIsLate();
 }
 
 //animation for Delivery Board rows and select.
@@ -240,21 +253,27 @@ $("#deliveryTable tbody").on("click","tr",function(){
 
 //Toast for Delivery Board delete selected row.
  function deliveryBoard(){
-    let selected = $("#deliveryTable .selected");
     $("#deliveryClearToast").toast("show");  
  }
 
-//removes the row selected by user
+//removes the row selected by user.
  function deliveryClear(){
     $("#deliveryClearToast").toast("hide");
     let selected = $("#deliveryTable .selected");
     selected.remove();
- }
+ } 
 
-//  //checking if late. setInterval, clearInterval()
-//  function staffLate(obj){
-//     obj.expectedReturn ? obj.staffMemberIsLate() : obj.deliveryDriverIsLate();
-//  }
- 
-
- // activate staffLate and driverLate and keep them checking if time is overdue.
+ //clears toast of name after display, onclick.
+function clearToast(type){
+    switch(type){
+        case "staff":
+            $("#staffToastmessage").text("");
+            break;
+        case "delivery":
+             $("#deliveryLateToastmessage").text("");
+             break;
+        case "form":
+            $("#deliveryDriverForm").trigger("reset"); 
+           break;
+    }
+}
