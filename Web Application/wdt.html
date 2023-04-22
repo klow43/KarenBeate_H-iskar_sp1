@@ -55,7 +55,7 @@
         <tbody></tbody>
     </table>
   <button class="position-absolute rounded-3 mt-1 border-0 text-white text-center" id="staffOut" onclick="outOrEnd()">Out</button>
-  <button class="position-absolute end-0 rounded-3 mt-1 border-0 text-white text-center" id="staffIn" onclick="staffIn()">In</button>    
+  <button class="position-absolute end-0 rounded-3 mt-1 border-0 text-white text-center" id="staffIn" onclick="staffIn(), noTimeout()">In</button>    
 </div>
 
 <h6 class="text-center mt-5" id="scheduleHeader">Schedule Delivery</h6>
@@ -104,10 +104,10 @@
 </table>
 <button onclick="deliveryBoard()" class="position-absolute rounded-3 mt-1 border-0 text-white text-center" id="deliveryClear">Clear</button>
 </div>
-<div class="toast translate-middle z-index-3" id="deliveryLateToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true">
+<div class="toast z-index-3" id="deliveryLateToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true">
     <div class="toast-body" id="deliveryLateToastmessage"></div>
       <div class="mt-2 pt-2 border-top">
-        <button type="button" id="deliveryAction" class="btn btn-primary w-25" onclick="clearToast('delivery')">Take action</button>
+        <button type="button" id="deliveryAction" class="btn btn-primary w-25" onclick="deliveryAction()">Take action</button>
         <button type="button" id="deliveryDismiss" class="btn btn-secondary w-25" data-bs-dismiss="toast" onclick="clearToast('delivery')">Close</button>
     </div>
 </div>
@@ -116,7 +116,7 @@
 <div class="toast z-index-3" id="deliveryClearToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true" >
     <div class="toast-body" id="deliveryClearToastmessage"></div>
       <div class="mt-2 pt-2 border-top">Would you like to remove delivery driver from table?<br>
-        <button onclick="deliveryClear()" type="button" id="deliveryRemove" class="btn btn-primary w-25" >Remove</button>
+        <button onclick="deliveryClear(),nodeliveryTimeout()" type="button" id="deliveryRemove" class="btn btn-primary w-25" >Remove</button>
         <button type="button" id="deliveryClose" class="btn btn-secondary w-25" data-bs-dismiss="toast">Close</button>
     </div>
 </div>

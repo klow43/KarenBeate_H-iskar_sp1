@@ -30,9 +30,9 @@ class StaffMember extends Employee{
         this.expectedReturn = obj.expectedReturn;
     }
     //method to alert user if staff member is delayed on office break.
-    staffMemberIsLate(){
-           $("#staffToastmessage").prepend(`<image src="${this.picture}"> <br> </image> Staff not returned at expected time : ${this.name} ${this.surname}`);  
-                $("#staffToast").toast("show"); 
+    staffMemberIsLate(picture,name,surname){
+          $("#staffToastmessage").prepend(`<image src="${picture}"> </image><br> Staff not returned at expected time : ${name} ${surname}`);  
+                $("#staffToast").toast("show");   
             }               
 }
 
@@ -46,8 +46,8 @@ class DeliveryDriver extends Employee{
         this.returnTime = obj.returnTime;
     }
     //method to alert user if delivery is delayed on route.
-    deliveryDriverIsLate(){
-            $("#deliveryLateToastmessage").prepend(`Delivery driver overdue expected return : <br> ${this.name} ${this.surname}. <br> Phone number: ${this.telephone}. <br> Delivery Adress: ${this.deliveryAdress}. <br> Supposed return time: ${this.returnTime}`);
+    deliveryDriverIsLate(name,surname,telephone,deliveryAdress,returnTime){
+            $("#deliveryLateToastmessage").prepend(`Delivery driver overdue expected return : <br> ${name} ${surname}. <br> Phone number: ${telephone}. <br> Delivery Adress: ${deliveryAdress}. <br> Estimated return time: ${returnTime}`);
                 $("#deliveryLateToast").toast("show");
         }
 }
@@ -121,6 +121,7 @@ function outOrEnd(){
    $("#staffOutToast").toast("show"); 
 }
 
+//hides staffToast and clears info.
 function takeActionStaff(){
     $("#staffToast").toast("hide");
     clearToast('staff');
@@ -138,20 +139,18 @@ function getSelectedObject(){
 function staffOut(){
     $("#staffOutToast").toast("hide");
     let obj = getSelectedObject();
-    let time = digitalClock()
-    let hours = parseInt(time.slice(0,2));
-    const minutes = parseInt(time.slice(3,5));
+    let hours = parseInt(digitalClock().slice(0,2));
+    const minutes = parseInt(digitalClock().slice(3,5));
     let away = prompt("Enter estimated away time in minutes:","enter minutes")
     obj.status = "Break";
     obj.outTime = (minutes < 10) ? (hours + ":0" + minutes) : (hours + ":" + minutes);
-    let hour = Math.floor(+away/60);
-    let minute = (+away-(hour*60));
+        let hour = Math.floor(+away/60);
+        let minute = (+away-(hour*60));
     obj.duration = (+away < 60) ?  (away + "min") : (hour + "hr " + minute + "min");
-    let x = +away + minutes;
-    if(x >= 60){
-        while (x > 60){x -= 60;hours += 1;}
-        obj.expectedReturn = (x <= 10) ? (hours + ":0" + x) : (hours + ":" + x);}       
-    else{obj.expectedReturn = (hours + ":" + x);} 
+        let x = +away + minutes;
+        while(x >= 60){x -= 60;hours += 1; obj.expectedReturn = (x <= 10) ? (hours + ":0" + x) : (hours + ":" + x);}       
+    obj.expectedReturn = (hours + ":" + x);
+    obj.minutesaway = away; 
         updateTable(obj);                   
 }
 
@@ -176,6 +175,9 @@ function staffIn(){
     updateTable(obj);
 }
 
+//Timeout for staff tracking return Time.
+let staffTimeout; 
+
 //updates table after object update.
 function updateTable(obj){
     let rowSelected = $(".rowselected")
@@ -186,9 +188,13 @@ function updateTable(obj){
     cells[6].innerHTML = obj.duration;
     cells[7].innerHTML = obj.expectedReturn;
     if(obj.expectedReturn != null){
-        obj.staffMemberIsLate();
+        const x = obj.minutesaway * 60000;
+        staffTimeout = setTimeout(obj.staffMemberIsLate, x,obj.picture, obj.name, obj.surname);
     }
 }
+
+//Clearing timeout if staff clicked In before expecte return.
+const noStaffTimeout = () => clearTimeout(staffTimeout); 
 
 //checking for only letter input.
 function lettersOnly(obj){
@@ -223,26 +229,38 @@ function validateDelivery(){
     }
 }
 
+//Delivery Driver Timeout.
+let deliveryTimeout;
+
 //make input value into object, insert into Delivey Board.
 function addDelivery(obj){
     const tablebody = document.querySelector("#deliveryTable tbody");
     const row = tablebody.insertRow();
-    const deliveryDriver = new DeliveryDriver(obj);
-    if(deliveryDriver.vehicle == "Car"){
-    row.insertCell(0).innerHTML = `<img src="Car.png" alt="Car" width="50" height="50"></img>`;
+    const obj1 = new DeliveryDriver(obj);
+    if(obj1.vehicle == "Car"){
+    row.insertCell(0).innerHTML = `<img src="Car.png" alt="Car"></img>`;
     //Fiat 500 by Icons8
     }
     else{
-    row.insertCell(0).innerHTML = `<img src="Motorcycle.png" alt="Motorcycle" width="50" height="50"></img>`;
+    row.insertCell(0).innerHTML = `<img src="Motorcycle.png" alt="Motorcycle"></img>`;
     }
-    row.insertCell(1).innerHTML = obj.name;
-    row.insertCell(2).innerHTML = obj.surname;
-    row.insertCell(3).innerHTML = obj.telephone;
-    row.insertCell(4).innerHTML = obj.deliveryAdress;
-    row.insertCell(5).innerHTML = obj.returnTime;
+    row.insertCell(1).innerHTML = obj1.name;
+    row.insertCell(2).innerHTML = obj1.surname;
+    row.insertCell(3).innerHTML = obj1.telephone;
+    row.insertCell(4).innerHTML = obj1.deliveryAdress;
+    row.insertCell(5).innerHTML = obj1.returnTime;
     clearToast("form");
-    //obj.deliveryDriverIsLate();
+    let hours = parseInt(digitalClock().slice(0,2));
+    let minutes = parseInt(digitalClock().slice(3,5));
+    let x = parseInt(obj1.returnTime.slice(0,2)) - hours;
+    let y = parseInt(obj1.returnTime.slice(3,5)) - minutes;
+    while(x > 0){x -= 1;y += 60}
+    let z = y * 60000;
+    deliveryTimeout = (setTimeout(obj1.deliveryDriverIsLate, z,obj1.name,obj1.surname,obj1.telephone,obj1.deliveryAdress,obj1.returnTime))
 }
+
+//removes timeout for delivery driver onclick toast remove.
+const nodeliveryTimeout = () => clearTimeout(deliveryTimeout);
 
 //animation for Delivery Board rows and select.
 $("#deliveryTable tbody").on("click","tr",function(){
@@ -264,6 +282,12 @@ $("#deliveryTable tbody").on("click","tr",function(){
     selected.remove();
  } 
 
+ //hide deliverylateToast and clear toast of information.
+ function deliveryAction(){
+    $("#deliveryLateToast").toast("hide");
+    clearToast("delivery");
+ }
+
  //clears toast of name after display, onclick.
 function clearToast(type){
     switch(type){
@@ -278,3 +302,4 @@ function clearToast(type){
            break;
     }
 }
+
