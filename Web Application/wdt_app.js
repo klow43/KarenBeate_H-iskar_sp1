@@ -30,8 +30,8 @@ class StaffMember extends Employee{
         this.expectedReturn = obj.expectedReturn;
     }
     //method to alert user if staff member is delayed on office break.
-    staffMemberIsLate(picture,name,surname){
-          $("#staffToastmessage").prepend(`<image src="${picture}"> </image><br> Staff not returned at expected time : ${name} ${surname}`);  
+    staffMemberIsLate(picture,name,surname,duration){
+          $("#staffToastmessage").prepend(`<image src="${picture}"> </image><br> Staff not returned at expected time : ${name} ${surname} <br> Staff has been out of office for : ${duration}`);  
                 $("#staffToast").toast("show");   
             }               
 }
@@ -189,7 +189,7 @@ function updateTable(obj){
     cells[7].innerHTML = obj.expectedReturn;
     if(obj.expectedReturn != null){
         const x = obj.minutesaway * 60000;
-        staffTimeout = setTimeout(obj.staffMemberIsLate, x,obj.picture, obj.name, obj.surname);
+        staffTimeout = setTimeout(obj.staffMemberIsLate, x,obj.picture, obj.name, obj.surname, obj.duration);
     }
 }
 

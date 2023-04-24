@@ -6,7 +6,7 @@ Web Application folder for code files:
 -HTML 
 -CSS 
 -JavaScript
----------------
+
 -icon motorcycle
 -icon car
 -logo company
