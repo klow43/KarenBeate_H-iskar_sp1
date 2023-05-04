@@ -1,49 +1,49 @@
 /*CSS used for specific colors, sizing, fonts and placing after clients request, Bootstrap unable to meet requirements*/
-button {
-  width: 45px;
-  height: 30px;
-  text-size-adjust: auto;
+button{
   font-family: Consolas;
 }
 
-button#staffOut, button#deliveryClear, button#deliveryRemove, button#staffAction, button#deliveryAction{
+button#staffOut,button#staffIn,button#deliveryAdd, button#deliveryClear{
+  width: 45px;
+  height: 30px;
   font-size: 12px;
+}
+
+button#staffOut, button#deliveryClear, button#deliveryRemove, button#staffAction, button#deliveryAction{
   background-color: #dc3545;
+}
+
+button#staffOut:hover, button#deliveryClear:hover, button#deliveryRemove:hover, button#staffAction:hover, button#deliveryAction:hover{
+  background-color: rgb(250, 21, 21);
+}
+
+button#staffIn, button#deliveryAdd, button#staffOutBreak{
+  background-color: #198754;
+}
+
+button#staffIn:hover, button#deliveryAdd:hover, button#staffOutBreak:hover {
+  background-color: rgb(24, 194, 24);
+}
+
+button#deliveryClose, button#staffClose, button#staffDayOver, button#deliveryDismiss,button#minutesAwayButton{
+  background-color: #83D1E1;
+}
+
+button#deliveryClose:hover, button#staffClose:hover, button#staffDayOver:hover, button#deliveryDismiss:hover,button#minutesAwayButton:hover{
+  background-color: #0E8EA8;
 }
 
 button#staffOut, button#deliveryClear{
    margin-left: 15%;
 }
 
-button#staffOut:hover, button#deliveryClear:hover {
-  background-color: rgb(250, 21, 21);
-}
-
-button#staffIn, button#scheduleAdd, button#staffOutBreak {
-  background-color: #198754;
-  font-size: 12px;
-}
-
-button#staffIn, button#scheduleAdd{
+button#staffIn, button#deliveryAdd{
   margin-right: 15%;
 }
 
-button#staffIn:hover, button#scheduleAdd:hover {
-  background-color: rgb(24, 194, 24);
-}
-
-button#deliveryClose, button#staffClose, button#staffDayOver, button#deliveryDismiss{
-  background-color: #83D1E1;
-  font-size: 12px;
-}
-
-h6, h4, #header {
+h6, h4, #receptionHeader, #modalHeader {
   font-family: Calibri;
   color: #212529;
-}
-
-h6, #header{
-  padding-top: 30px;
 }
 
 table{
@@ -72,11 +72,7 @@ table tr:hover td{
   background-color:#0E8EA8;
 }
 
-#staffTable .rowselected td{
-  background-color:#0E8EA8;
-}
-
-#deliveryTable .selected td{
+#staffTable .rowselected td,#deliveryTable .selected td{
   background-color:#0E8EA8;
 }
 
@@ -87,16 +83,8 @@ table tr:hover td{
 }
 
 .toast{
-  z-index: 5;
-  margin: auto;
   font-family:Calibri;
   text-align: center;
-}
-#staffAction,#staffClose, #deliveryAction, #deliveryClose, #staffDayOver, #staffOutTemp{
-  text-align: center;
-  font-size:10px;
-  size: 20px;
-  position:center;
 }
 
 #vehicleInput, #nameInput, #surnameInput, #telephoneInput, #deliveryInput, #returnInput{
