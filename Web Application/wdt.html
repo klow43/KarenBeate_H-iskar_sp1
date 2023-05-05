@@ -41,15 +41,15 @@
 <div>
     <table class="rounded rounded-3 overflow-hidden table-bordered w-75" id="staffTable">
         <thead>
-         <tr class="text-center" id="staffTableHeader">
-                <th>Picture</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Email adress</th>
-                <th>Status</th>
-                <th>Out Time</th>
-                <th>Duration</th>
-                <th>Expected Return Time</th>
+         <tr class="text-center fs-6" id="staffTableHeader">
+                <th class="p-2">Picture</th>
+                <th class="p-3">Name</th>
+                <th class="p-2">Surname</th>
+                <th class="p-1">Email adress</th>
+                <th class="p-2">Status</th>
+                <th class="p-2">Out Time</th>
+                <th class="p-2">Duration</th>
+                <th class="p-3">Expected Return Time</th>
         </tr>   
         </thead>
         <tbody></tbody>
@@ -60,28 +60,28 @@
 
 <h6 class="text-center mt-5 pt-3" id="scheduleHeader">Schedule Delivery</h6>
     <table class="rounded rounded-3 overflow-hidden table-bordered w-75">
-          <tr class="text-center">
-            <th>Vehicle</th>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Telephone</th>
-            <th>Delivery Adress</th>
-            <th>Return Time</th>
+          <tr class="text-center fs-6">
+            <th class="col-2">Vehicle</th>
+            <th class="col-2">Name</th>
+            <th class="col-2">Surname</th>
+            <th class="col-2">Telephone</th>
+            <th class="col-2">Delivery Adress</th>
+            <th class="col-2">Return Time</th>
         </tr>
         <tr>
            <form id="deliveryDriverForm">
             <td>
-                <select id="vehicleInput" class="form-select form-select-sm col-4" aria-label=".form-select-sm example">
+                <select id="vehicleInput" class="form-select border-0 text-nowrap">
                     <option selected>Transport</option>
                     <option value="Motorcycle">Motorcycle</option>
                     <option value="Car">Car</option>
                 </select>
             </td>
-            <td><input id="nameInput"></td>
-            <td><input id="surnameInput"></td>
-            <td><input id="telephoneInput"></td>
-            <td><input id="deliveryInput"></td>
-            <td><input type="time" id="returnInput"></td>
+            <td><input id="nameInput" class="border-0 w-75"></td>
+            <td><input id="surnameInput" class="border-0 w-75"></td>
+            <td><input id="telephoneInput" class="border-0 w-75"></td>
+            <td><input id="deliveryInput" class="border-0 w-100"></td>
+            <td><input type="time" id="returnInput" class="border-0 w-75"></td>
            </form>
         </tr>  
     </table>
@@ -91,7 +91,7 @@
 <div>
 <table class="rounded rounded-3 overflow-hidden table-bordered w-75" id="deliveryTable">
     <thead>
-     <tr class="text-center">
+     <tr class="text-center fs-6">
             <th>Vehicle</th>
             <th>Name</th>
             <th>Surname</th>
@@ -109,22 +109,26 @@
 
 <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
   <div class="toast-container position-absolute top-50 start-50 translate-middle p-3">
-    <div class="toast p-3" id="deliveryLateToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true">
+
+    <div class="toast p-3 hide text-center" id="deliveryLateToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true">
       <div class="toast-body" id="deliveryLateToastmessage"></div>
           <button id="deliveryAction" type="button" class="btn w-25" onclick="deliveryAction()">Act</button>
           <button id="deliveryDismiss" type="button"  class="btn w-25" data-bs-dismiss="toast" onclick="clearToast('delivery')">Dismiss</button>
     </div>
-    <div class="toast p-3" id="deliveryClearToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true" >
+
+    <div class="toast p-3 hide text-center" id="deliveryClearToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true" >
       <div class="toast-body" id="deliveryClearToastmessage">Would you like to remove delivery driver from table?</div><br>
           <button id="deliveryRemove" onclick="deliveryClear(),nodeliveryTimeout()" type="button" class="btn btn-primary w-25" >Remove</button>
           <button id="deliveryClose" type="button" class="btn w-25" data-bs-dismiss="toast">Close</button>
-    </div>   
-    <div class="toast p-3" id="staffToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true">
+    </div>  
+
+    <div class="toast p-3 hide text-center" id="staffToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true">
       <div class="toast-body" id="staffToastmessage"></div>
           <button id="staffAction" type="button" class="btn w-25" onclick="takeActionStaff()">Act</button>
           <button id="staffClose" type="button" class="btn w-25" data-bs-dismiss="toast" onclick="clearToast('staff')">Dismiss</button> 
     </div>
-    <div class="toast p-3" id="staffOutToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true">
+
+    <div class="toast p-3 hide text-center" id="staffOutToast" data-bs-autohide="false" role="status" aria-live="polite" aria-atomic="true">
       <div class="toast-body" id="staffToastmessage">Staff done for the day or going out on break?</div><br>
           <button id="staffDayOver" type="button" class="btn w-25" onclick="staffEnd()">End day</button>
           <button id="staffOutBreak" type="button" class="btn w-25" onclick="getMinutes()">Break</button> 
@@ -145,7 +149,7 @@
             </div>
           </div>
         <div class="modal-footer justify-content-center">
-              <button class="btn" id="minutesAwayButton" type="submit" onclick="staffOut()">Apply</button>
+              <button id="minutesAwayButton" class="btn" data-bs-dismiss="modal"  type="submit" onclick="staffOut()">Apply</button>
         </div>
     </div>
   </div>

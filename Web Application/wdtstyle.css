@@ -56,8 +56,6 @@ th{
   font-family: Consolas;
   color: #fff;
   background-color: #0E8EA8;
-  font-size: 12px;
-  padding: 5px;
 }
 
 td{
@@ -65,7 +63,6 @@ td{
   font-family: Calibri;
   background-color: #83D1E1;
   color: #212529;
-  padding:5px;
 }
 
 table tr:hover td{
@@ -84,17 +81,10 @@ table tr:hover td{
 
 .toast{
   font-family:Calibri;
-  text-align: center;
 }
 
 #vehicleInput, #nameInput, #surnameInput, #telephoneInput, #deliveryInput, #returnInput{
   background-color: #83D1E1;
-  border: none;
-}
-
-input{
-  width: 100px;
-  height: 30px;
 }
 
 #navbarDashboard, #navbarInventory, #navbarOrders{

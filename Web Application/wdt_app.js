@@ -52,7 +52,7 @@ class DeliveryDriver extends Employee{
         }
 }
 
-//get API "staff member".
+//get API "staff member". automatically converted to JS objects with JQuery.
 function staffUserGet(){
 let staff = {};
 $.ajax({
