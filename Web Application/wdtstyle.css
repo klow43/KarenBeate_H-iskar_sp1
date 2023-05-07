@@ -41,7 +41,7 @@ button#staffIn, button#deliveryAdd{
   margin-right: 15%;
 }
 
-h6, h4, #receptionHeader, #modalHeader {
+#receptionHeader, #modalHeader, #scheduleHeader, #staffHeader, #receptionHeader, #deliveryHeader {
   font-family: Calibri;
   color: #212529;
 }
@@ -87,7 +87,7 @@ table tr:hover td{
   background-color: #83D1E1;
 }
 
-#navbarDashboard, #navbarInventory, #navbarOrders{
+#navbarDashboard, #navbarInventory, #navbarOrders,#navbar{
   background-color: #0E8EA8;
   color: #fff;
   font-family: Consolas; 
@@ -97,13 +97,12 @@ table tr:hover td{
   background-color:#83D1E1;
 }
 
-#navdropdown1, #navdropdown2{
+#navbarInventorydropdown, #navbarOrdersdropdown{
     background-color: #83D1E1;
     color: #212529;
     font-family: Consolas;
 }
 
-li{
-  list-style-type: none;
+#navbarInventorydropdown a:hover, #navbarOrdersdropdown a:hover{
+  background-color: #0E8EA8;
 }
-

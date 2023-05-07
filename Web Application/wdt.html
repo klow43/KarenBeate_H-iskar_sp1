@@ -12,27 +12,27 @@
 </head>    
 <body>    
 
-<div>
-<nav class="d-flex flex-row top-0 start-0 w-25" id="navbar">
-    <li class="nav-item">
-    <a class="nav-link" aria-current="page" id="navbarDashboard" href="http://127.0.0.1:3000/Web%20Application/wdt.html">Dashboard</a>
-    </li> 
-        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" id="navbarInventory">Inventory</a>
-      <ul class="dropdown-menu" id="navdropdown1">
-        <li><a class="dropdown-item">Search</a></li>
-        <li><a class="dropdown-item">Add</a></li>
-        <li><a class="dropdown-item">Remove</a></li>
-      </ul>
-    </li>
-     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" id="navbarOrders">Orders</a>
-      <ul class="dropdown-menu" id="navdropdown2">
-        <li><a class="dropdown-item">Search</a></li>
-        <li><a class="dropdown-item">Add</a></li>
-        <li><a class="dropdown-item">Remove</a></li>
-      </ul>
-       </li> 
+<nav id="navbar" class="navbar top-0 start-0">
+  <div class="container-fluid justify-content-start d-flex align-items-start">
+        <div id="navbarDashboard" class="dropdown-header" aria-current="page" onclick="location.href='http://127.0.0.1:3000/Web%20Application/wdt.html'">Dashboard</div>
+        <div class="dropdown">
+        <div id="navbarInventory" class="dropdown-header"  data-bs-toggle="dropdown" aria-expanded="false">Inventory</div>
+          <div id="navbarInventorydropdown" class="dropdown-menu">
+            <a class="dropdown-item">Search</a>
+            <a class="dropdown-item">Add</a>
+            <a class="dropdown-item">Remove</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <div id="navbarOrders" class="dropdown-header"  role="button" data-bs-toggle="dropdown" aria-expanded="false">Orders</div>
+            <div id="navbarOrdersdropdown" class="dropdown-menu">
+              <a class="dropdown-item">Search</a>
+              <a class="dropdown-item">Add</a>
+              <a class="dropdown-item">Remove</a>
+            </div>
+        </div>  
+  </div> 
 </nav>
-</div>
 
 <h4 class="text-center w-100 pt-3" id="receptionHeader">Reception Management Dashboard</h4> 
 
@@ -49,7 +49,7 @@
                 <th class="p-2">Status</th>
                 <th class="p-2">Out Time</th>
                 <th class="p-2">Duration</th>
-                <th class="p-3">Expected Return Time</th>
+                <th class="p-3 lh-1">Expected Return Time</th>
         </tr>   
         </thead>
         <tbody></tbody>
