@@ -38,6 +38,7 @@
 
 <img class="position-absolute top-0 start-0" src="WDTlogo.png" alt="WDTlogo" style="z-index:-1;" height="220" width="300">
 <h6 class="text-center mt-5 pt-3" id="staffHeader">Staff</h6>
+
 <div>
     <table class="rounded rounded-3 overflow-hidden table-bordered w-75" id="staffTable">
         <thead>
@@ -54,8 +55,8 @@
         </thead>
         <tbody></tbody>
     </table>
-  <button class="position-absolute rounded-3 mt-1 border-0 text-white text-center" id="staffOut" onclick="outOrEnd()">Out</button>
-  <button class="position-absolute end-0 rounded-3 mt-1 border-0 text-white text-center" id="staffIn" onclick="staffIn(), noTimeout()">In</button>    
+  <button class="position-absolute rounded-3 mt-1 border-0 text-white text-center px-3 py-1" id="staffOut" onclick="outOrEnd()">Out</button>
+  <button class="position-absolute end-0 rounded-3 mt-1 border-0 text-white text-center px-4 py-1" id="staffIn" onclick="staffIn(), noStaffTimeout()">In</button>    
 </div>
 
 <h6 class="text-center mt-5 pt-3" id="scheduleHeader">Schedule Delivery</h6>
@@ -85,7 +86,7 @@
            </form>
         </tr>  
     </table>
-<button onclick="validateDelivery()" class="position-absolute end-0 rounded-3 mt-1 border-0 text-white text-center" id="deliveryAdd">Add</button>      
+<button onclick="validateDelivery()" class="position-absolute end-0 rounded-3 mt-1 border-0 text-white text-center px-3 py-1" id="deliveryAdd">Add</button>      
    
 <h6 class="text-center mt-5 pt-3" id="deliveryHeader">Delivery Board</h6>
 <div>
@@ -102,10 +103,10 @@
     </thead>
     <tbody></tbody>
 </table>
-<button onclick="deliveryBoard()" class="position-absolute rounded-3 mt-1 border-0 text-white text-center" id="deliveryClear">Clear</button>
+<button onclick="deliveryBoard()" class="position-absolute rounded-3 mt-1 border-0 text-white text-center px-2 py-1" id="deliveryClear">Clear</button>
 </div>
 
-<div class="position-fixed bottom-0 end-0" id="time"></div>
+<h4 class="position-fixed bottom-0 end-0" id="time"></h4>
 
 <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
   <div class="toast-container position-absolute top-50 start-50 translate-middle p-3">

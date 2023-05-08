@@ -3,12 +3,6 @@ button{
   font-family: Consolas;
 }
 
-button#staffOut,button#staffIn,button#deliveryAdd, button#deliveryClear{
-  width: 45px;
-  height: 30px;
-  font-size: 12px;
-}
-
 button#staffOut, button#deliveryClear, button#deliveryRemove, button#staffAction, button#deliveryAction{
   background-color: #dc3545;
 }
@@ -76,7 +70,6 @@ table tr:hover td{
 #time{
   font-family:Calibri;
   color: #212529;
-  font-size:20px;
 }
 
 .toast{
