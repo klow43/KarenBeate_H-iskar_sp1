@@ -52,41 +52,6 @@ class DeliveryDriver extends Employee{
         }
 }
 
-//get "staff members". Automatically converted to JS objects with JQuery, instead of JSON.parse(obj)
-function staffUserGet(){
-let staff = {};
-$.ajax({
-    url: 'https://randomuser.me/api/',
-    dataType: 'json',
-    async: false,
-    success: function(data){
-        let obj = {
-            picture : data.results[0].picture.thumbnail,
-            name : data.results[0].name.first,
-            surname : data.results[0].name.last,
-            email : data.results[0].email,
-            status : "Out",
-            outTime : null,
-            duration : null,
-            expectedReturn : null
-        }
-        staff = new StaffMember(obj);
-    },
-    error: function(){
-        alert("Staff unable to upload, apologies for the inconvenience, please retry later.")
-    }
-  });
-return staff;
-};
-
-//5 "staff members".
-let employee0 = staffUserGet();
-let employee1 = staffUserGet();
-let employee2 = staffUserGet();
-let employee3 = staffUserGet();
-let employee4 = staffUserGet();
-let staff = [employee0,employee1,employee2,employee3,employee4];
-
 //staffTable rows and cells
 function fillStaffTable(obj){
     const tablebody = document.querySelector("#staffTable tbody");
@@ -101,12 +66,39 @@ function fillStaffTable(obj){
     row.insertCell(7).innerHTML = obj.expectedReturn;   
 };
 
-//load employees onto staffTable
-fillStaffTable(employee0);
-fillStaffTable(employee1);
-fillStaffTable(employee2);
-fillStaffTable(employee3);
-fillStaffTable(employee4);
+//get "staff members". Automatically converted to JS objects with JQuery, instead of JSON.parse(obj)
+function staffUserGet(){
+let members = [];
+for(i = 0; i < 5; i++){
+let staff = {};
+    $.ajax({
+    url: 'https://randomuser.me/api/',
+    dataType: 'json',
+    async: false,
+    success: function(data){
+        let obj = {
+            picture : data.results[0].picture.thumbnail,
+            name : data.results[0].name.first,
+            surname : data.results[0].name.last,
+            email : data.results[0].email,
+            status : "Out",
+            outTime : null,
+            duration : null,
+            expectedReturn : null
+            }
+        staff[i] = new StaffMember(obj);
+        fillStaffTable(staff[i]);
+        members.push(staff[i]);
+        },
+    error: function(){
+        alert("Staff unable to upload, apologies for the inconvenience.")
+            }
+        });
+    }
+    return members;
+};
+
+const members = staffUserGet()
 
 //table animation on click staffTable, adding class for when selected.
 $("#staffTable tr").click(function(){
@@ -121,7 +113,7 @@ function outOrEnd(){
    $("#staffOutToast").toast("show"); 
 }
 
-//hides staffToast and clears info.
+//hides staffToast and clears info. Input for actions possible if staffmember is late possible here!
 function takeActionStaff(){
     $("#staffToast").toast("hide");
     clearToast('staff');
@@ -131,17 +123,17 @@ function takeActionStaff(){
 function getSelectedObject(){
     let rowSelected = $(".rowselected");
     let index = $("tbody tr").index(rowSelected);
-    let obj = staff[index];
+    let obj = members[index];
     return obj;
 }
 
-//getting minutes for "break" of staffmember
+//hiding toast for staff out or break, showing modal for minute input.
 function getMinutes(){
     $("#staffOutToast").toast("hide");
     $("#modalMinutesAway").modal("show");
 }
 
-//staff goin out for break/awaytime from workday.
+//staff goin out for break from workday.
 function staffOut(){
     let obj = getSelectedObject();
     let hours = parseInt(digitalClock().slice(0,2));
@@ -159,7 +151,7 @@ function staffOut(){
         updateTable(obj);                   
 }
 
-//staff going home for the day, status out and clears time, duration, expected return.
+//changes statur to out, clears time, duration, expected return.
 function staffEnd(){
     $("#staffOutToast").toast("hide");
     obj = getSelectedObject();
@@ -198,26 +190,26 @@ function updateTable(obj){
     }
 }
 
-//Clearing timeout if staff clicked In before expected return.
-const noStaffTimeout = () => clearTimeout(staffTimeout); 
+//Clearing timeout if staff clicked In before expected return. Checking if timeout set on staffmember.
+const noStaffTimeout = function(){if(staffTimeout){clearTimeout(staffTimeout)}}; 
 
-//checking for only letter input.
+//checking for only letter input.Validating Delivery Input.
 function lettersOnly(obj){
-    let check = /^[ÆØÅæøåA-Za-z ]+$/;
+    const check = /^[ÆØÅæøåA-Za-z ]+$/;
     return check.test(obj);
 }
-//checking for only number input.
+//checking for only number input. Validating Delivery Input.
 function numbersOnly(obj){
-    let check = /^[0-9]+$/;
+    const check = /^[0-9]+$/;
     return check.test(obj);
 }
-//Checking for only numbers AND letters(delivery Adress)
+//Checking for only numbers AND letters.Validating Delivery Input.
 function numbersAndLetters(obj){
-    let check = /^[0-9ÆØÅæøåa-zA-Z\s,-]+$/;
+    const check = /^[0-9ÆØÅæøåa-zA-Z\s,-]+$/;
     return check.test(obj);
 }
 
-//validating correct input by user, if wrong, prompt.
+//Getting form input Schedule Delivery, checking input, making new Deliverydriver, addign to table.
 function validateDelivery(){
     const vehicle = $("#vehicleInput").find(":selected").val();
     const name = $("#nameInput").val();
@@ -231,7 +223,6 @@ function validateDelivery(){
     else{
         const deliveryDriver = {vehicle,name,surname,telephone,deliveryAdress,returnTime}
         const obj = new DeliveryDriver(deliveryDriver);
-        console.log(obj)
         addDelivery(obj);  
     }
 }
@@ -239,7 +230,7 @@ function validateDelivery(){
 //Delivery Driver Timeout.
 let deliveryTimeout;
 
-//make input value into object, insert into Delivey Board.
+//Insert into Delivey Board,set Timeout for delivery driver.
 function addDelivery(obj){
     const tablebody = document.querySelector("#deliveryTable tbody");
     const row = tablebody.insertRow();
@@ -259,17 +250,17 @@ function addDelivery(obj){
     row.insertCell(4).innerHTML = obj.deliveryAdress;
     row.insertCell(5).innerHTML = obj.returnTime;
     clearToast("form");
-    let hours = parseInt(digitalClock().slice(0,2));
-    let minutes = parseInt(digitalClock().slice(3,5));
+    const hours = parseInt(digitalClock().slice(0,2));
+    const minutes = parseInt(digitalClock().slice(3,5));
     let x = parseInt(obj.returnTime.slice(0,2)) - hours;
     let y = parseInt(obj.returnTime.slice(3,5)) - minutes;
     while(x > 0){x -= 1;y += 60}
-    let z = y * 60000;
+    const z = y * 60000;
     deliveryTimeout = (setTimeout(function(){obj.deliveryDriverIsLate}, z))
 }
 
 //removes timeout for delivery driver onclick toast remove.
-const nodeliveryTimeout = () => clearTimeout(deliveryTimeout);
+const nodeliveryTimeout = function(){if(deliveryTimeout){clearTimeout(deliveryTimeout)}};
 
 //animation for Delivery Board rows and select.
 $("#deliveryTable tbody").on("click","tr",function(){
@@ -279,7 +270,7 @@ $("#deliveryTable tbody").on("click","tr",function(){
       $(this).addClass("selected");
     }) 
 
-//Toast for Delivery Board delete selected row.
+//Toast for Delivery Board to assure user wants to delete selcted row.
  function deliveryBoard(){
     $("#deliveryClearToast").toast("show");  
  }
